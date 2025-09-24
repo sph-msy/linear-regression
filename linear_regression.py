@@ -6,6 +6,7 @@ Dataset used: Boston housing dataset (https://www.kaggle.com/datasets/altavish/b
 """
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def import_data(datafile):
     # input: datafile: string, name of the datafile with extension
@@ -30,10 +31,29 @@ def count_missing_values_rows(data):
 
     return null_val_row_count
 
-def clean_data(data):
+def visualize_data(table):
+
+    # count the number of rows with missing data
+    count_missing_values_rows(table)
+
+    # visualize the number of missing values for each columns
+    print(table.isnull().sum())
+
+    print("Number of columns with missing data:",(table.isnull().sum() != 0).sum(),"/",len(table.columns))
+
+    # Visualize missing data
+    plt.figure()
+    plt.title("Distribution of the missing values")
+    plt.imshow(table.isnull(), aspect="auto")
+    plt.show()
+
+
+    
+
+def preprocess_data(data):
     # print(data.head()) # print the header
 
-    count_missing_values_rows(data)
+    visualize_data(data) # we assume from the heatmap than data is MAR
 
     
 
@@ -41,6 +61,6 @@ def clean_data(data):
 
 def main():
     data = import_data("HousingData.csv")
-    clean_data(data)
+    preprocess_data(data)
 
 main()
